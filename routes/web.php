@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::get('/create', function()
 {
   $user = User::find(1);
-  $role = new Role(['name'=>'Administator']);
+  $role = new Role(['name'=>'user']);
   $user->roles()->save($role);
 });
 Route::get('/read', function()
@@ -47,4 +47,21 @@ Route::get('/delete', function()
   foreach ($user->roles as $role) {
     $role->where('id', 2)->delete();
   }
+});
+//add to Role_user ตรงๆเลย ที่ role id = 2
+Route::get('/attach', function()
+{
+  $user = User::find(1);
+  $user->roles()->attach(2);
+});
+Route::get('/detach', function()
+{
+  $user = User::find(1);
+  $user->roles()->detach(2);
+});
+//Sync คือ refresh ค่าใหม่หมดแล้วใส่ค่าตามที่กำหนดไว้
+Route::get('/sync', function()
+{
+  $user = User::findOrFail(1);
+  $user->roles()->sync([2,3]);
 });
